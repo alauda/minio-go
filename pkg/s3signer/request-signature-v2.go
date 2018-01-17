@@ -159,6 +159,18 @@ func SignV2(req http.Request, accessKeyID, secretAccessKey string, virtualHost b
 	return &req
 }
 
+func SignWukong(req http.Request, accessKeyID string) *http.Request {
+	// Signature calculation is not needed for anonymous credentials.
+	if accessKeyID == "" {
+		return &req
+	}
+
+	// Set Authorization header.
+	req.Header.Set("Authorization", fmt.Sprintf("token %s", accessKeyID))
+
+	return &req
+}
+
 // From the Amazon docs:
 //
 // StringToSign = HTTP-Verb + "\n" +

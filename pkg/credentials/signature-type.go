@@ -29,6 +29,7 @@ const (
 	SignatureV4
 	SignatureV2
 	SignatureV4Streaming
+	SignatureWukong
 	SignatureAnonymous // Anonymous signature signifies, no signature.
 )
 
@@ -40,6 +41,11 @@ func (s SignatureType) IsV2() bool {
 // IsV4 - is signature SignatureV4?
 func (s SignatureType) IsV4() bool {
 	return s == SignatureV4 || s == SignatureDefault
+}
+
+// IsWukong - is signature SignatureWukong?
+func (s SignatureType) IsWukong() bool {
+	return s == SignatureWukong
 }
 
 // IsStreamingV4 - is signature SignatureV4Streaming?
@@ -61,6 +67,8 @@ func (s SignatureType) String() string {
 		return "S3v4"
 	} else if s.IsStreamingV4() {
 		return "S3v4Streaming"
+	} else if s.IsWukong() {
+		return "S3Wukong"
 	}
 	return "Anonymous"
 }
@@ -72,6 +80,8 @@ func parseSignatureType(str string) SignatureType {
 		return SignatureV2
 	} else if strings.EqualFold(str, "S3v4Streaming") {
 		return SignatureV4Streaming
+	} else if strings.EqualFold(str, "S3Wukong") {
+		return SignatureWukong
 	}
 	return SignatureAnonymous
 }
