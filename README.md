@@ -1,3 +1,44 @@
+# Minio client (alauda modified version)
+## Install with govendor
+```sh
+govendor fetch github.com/minio/minio-go::github.com/alauda/minio-go@alauda
+```
+## Install with dep
+Add the following content to Gopkg.toml
+```toml
+ [[constraint]]
+   name = "github.com/minio/minio-go"
+   branch = "alauda"
+   source = "github.com/alauda/minio-go"
+```
+## Wukong example
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+
+	"github.com/minio/minio-go/pkg/credentials"
+	"github.com/minio/minio-go"
+)
+
+func main() {
+	endpoint := "abc.com:10086" // wukong endpoint without schema
+	token := "xxxxxxxxx" // user token from user center
+	useSSL := false
+	region := "us-east-1"
+
+	cred := credentials.NewWukong(token)
+	// Initialize minio client object.
+	minioClient, err := minio.NewWithCredentials(endpoint, cred, useSSL, region)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	minioClient.TraceOn(os.Stderr)
+}
+```
+
 # Minio Go Client SDK for Amazon S3 Compatible Cloud Storage [![Slack](https://slack.minio.io/slack?type=svg)](https://slack.minio.io) [![Sourcegraph](https://sourcegraph.com/github.com/minio/minio-go/-/badge.svg)](https://sourcegraph.com/github.com/minio/minio-go?badge) [![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](https://github.com/minio/minio-go/blob/master/LICENSE)
 
 The Minio Go Client SDK provides simple APIs to access any Amazon S3 compatible object storage.
